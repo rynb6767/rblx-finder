@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RBLX Finder｜Roblox 玩家查詢</title>
+<meta name="description" content="黑色科技風 Roblox 玩家查詢工具">
+<style>
+:root{--bg:#05070b;--panel:#0b1018;--panel2:#101722;--line:#1d2a3a;--text:#eef6ff;--muted:#8190a5;--cyan:#00e5ff;--purple:#8b5cf6;--danger:#ff5577}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,#102a42 0,#070a10 38%,#030407 100%);color:var(--text);font-family:Inter,"Noto Sans TC",system-ui,sans-serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;background-image:linear-gradient(rgba(0,229,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.035) 1px,transparent 1px);background-size:44px 44px}
+.wrap{width:min(1100px,92%);margin:auto;padding:58px 0 50px}.brand{display:flex;align-items:center;gap:14px;margin-bottom:45px}.logo{width:48px;height:48px;border:1px solid #2b4057;border-radius:14px;display:grid;place-items:center;background:#0b141f;box-shadow:0 0 30px rgba(0,229,255,.12);font-weight:900;color:var(--cyan);font-size:22px}.brand h1{font-size:19px;margin:0;letter-spacing:.08em}.brand span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.hero{text-align:center;max-width:800px;margin:0 auto 34px}.eyebrow{font-size:12px;letter-spacing:.2em;color:var(--cyan);text-transform:uppercase}.hero h2{font-size:clamp(38px,7vw,72px);line-height:.98;margin:13px 0 17px;letter-spacing:-.045em}.hero h2 b{background:linear-gradient(90deg,#fff,var(--cyan),#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:var(--muted);margin:0;font-size:15px}
+.search{margin:32px auto 42px;padding:8px;display:flex;gap:8px;max-width:760px;background:rgba(10,15,23,.86);border:1px solid #263548;border-radius:18px;box-shadow:0 18px 70px rgba(0,0,0,.35)}input{min-width:0;flex:1;background:transparent;border:0;outline:0;color:white;padding:15px 16px;font-size:16px}input::placeholder{color:#536176}button{border:0;border-radius:12px;padding:0 23px;background:linear-gradient(135deg,var(--cyan),#5bbcff);color:#021016;font-weight:800;cursor:pointer;transition:.2s}button:hover{transform:translateY(-1px);filter:brightness(1.08)}button:disabled{opacity:.5;cursor:wait;transform:none}
+.status{text-align:center;color:var(--muted);font-size:13px;min-height:20px;margin-bottom:18px}.error{color:var(--danger)}
+.results{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}.card{position:relative;overflow:hidden;background:linear-gradient(160deg,rgba(17,24,35,.94),rgba(7,11,17,.94));border:1px solid var(--line);border-radius:20px;padding:20px;transition:.22s}.card:hover{border-color:#35526d;transform:translateY(-3px);box-shadow:0 16px 45px rgba(0,0,0,.3)}.card:after{content:"";position:absolute;right:-40px;top:-40px;width:110px;height:110px;border-radius:50%;background:rgba(0,229,255,.07);filter:blur(4px)}.avatar{width:92px;height:92px;border-radius:18px;object-fit:cover;background:#111925;border:1px solid #26384b;display:block;margin-bottom:17px}.name{font-size:19px;font-weight:800;word-break:break-word}.display{color:#91a0b4;font-size:13px;margin-top:5px;word-break:break-word}.id{font-family:ui-monospace,SFMono-Regular,monospace;color:#5e7087;font-size:11px;margin-top:15px}.open{display:inline-block;margin-top:17px;color:var(--cyan);text-decoration:none;font-size:12px;font-weight:700}.empty{border:1px dashed #263548;border-radius:20px;padding:45px 20px;text-align:center;color:var(--muted);grid-column:1/-1}.footer{text-align:center;color:#4f5e71;font-size:11px;margin-top:45px}.loader{width:15px;height:15px;border:2px solid #314256;border-top-color:var(--cyan);border-radius:50%;display:inline-block;vertical-align:-3px;animation:spin .7s linear infinite;margin-right:7px}@keyframes spin{to{transform:rotate(360deg)}}@media(max-width:600px){.wrap{padding-top:30px}.search{border-radius:15px}button{padding:0 16px}.hero h2{font-size:42px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brand">
+    <div class="logo">R</div>
+    <div><h1>RBLX FINDER</h1><span>ROBLOX PLAYER SEARCH</span></div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow">PLAYER DATABASE</div>
+      <h2>搜尋你的 <b>Roblox 玩家</b></h2>
+      <p>輸入 Username 或關鍵字，快速找到玩家並查看頭像。</p>
+    </section>
+
+    <form class="search" id="form">
+      <input id="keyword" autocomplete="off" placeholder="例如：Builderman、Roblox、rynb69" maxlength="50">
+      <button id="btn" type="submit">搜尋</button>
+    </form>
+
+    <div id="status" class="status"></div>
+    <section id="results" class="results">
+      <div class="empty">輸入玩家名稱開始搜尋 🚀</div>
+    </section>
+  </main>
+
+  <footer class="footer">RBLX FINDER · 使用 Roblox 公開 API · 本網站與 Roblox Corporation 無隸屬關係</footer>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const form = $("#form"), input = $("#keyword"), btn = $("#btn"), status = $("#status"), results = $("#results");
+
+function escapeHTML(s){
+  return String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+}
+
+async function getJSON(url){
+  const r = await fetch(url, {headers:{Accept:"application/json"}});
+  if(!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
+}
+
+async function searchPlayers(keyword){
+  // Roblox 官方 Users API：GET /v1/users/search
+  const url = `https://users.roblox.com/v1/users/search?keyword=${encodeURIComponent(keyword)}&limit=20`;
+  const data = await getJSON(url);
+  return data.data || [];
+}
+
+async function getHeadshots(ids){
+  if(!ids.length) return {};
+  const url = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${ids.join(",")}&size=150x150&format=Png&isCircular=false`;
+  const data = await getJSON(url);
+  return Object.fromEntries((data.data || []).map(x=>[String(x.targetId),x.imageUrl]));
+}
+
+function render(users, heads){
+  if(!users.length){
+    results.innerHTML = `<div class="empty">找不到符合「${escapeHTML(input.value.trim())}」的玩家。</div>`;
+    return;
+  }
+  results.innerHTML = users.map(u => `
+    <article class="card">
+      <img class="avatar" src="${heads[String(u.id)] || ""}" alt="${escapeHTML(u.name)}" loading="lazy"
+           onerror="this.style.visibility='hidden'">
+      <div class="name">${escapeHTML(u.name)}</div>
+      <div class="display">@${escapeHTML(u.displayName || u.name)}</div>
+      <div class="id">USER ID · ${escapeHTML(u.id)}</div>
+      <a class="open" href="https://www.roblox.com/users/${encodeURIComponent(u.id)}/profile" target="_blank" rel="noopener">開啟 Roblox 個人檔案 ↗</a>
+    </article>`).join("");
+}
+
+form.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const keyword = input.value.trim();
+  if(!keyword) return;
+  btn.disabled = true;
+  status.innerHTML = `<span class="loader"></span>正在搜尋玩家…`;
+  results.innerHTML = "";
+  try{
+    const users = await searchPlayers(keyword);
+    const heads = await getHeadshots(users.map(u=>u.id));
+    render(users, heads);
+    status.textContent = `找到 ${users.length} 位結果`;
+  }catch(err){
+    console.error(err);
+    status.innerHTML = `<span class="error">搜尋失敗：${escapeHTML(err.message)}。如果你是直接用本機檔案開啟，請改用網站伺服器或部署到 GitHub Pages。</span>`;
+    results.innerHTML = `<div class="empty">無法連線到 Roblox API。請確認網路正常，或稍後再試。</div>`;
+  }finally{
+    btn.disabled = false;
+  }
+});
+
+input.focus();
+</script>
+</body>
+</html>
